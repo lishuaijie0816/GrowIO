@@ -87,13 +87,19 @@ if __name__ == '__main__':
     ''' 错误输出没写、代码冗杂待优化 '''
     ''' 输入项目各项值  '''
     info = ["secret:私钥","project:项目UID","ai:项目ID","pubkey:公钥"]
-
-    data_type = ['visit', 'page', 'action', 'action_tag', 'custom_event', 'ads_track_activation', 'ads_track_click', 'pvar', 'evar']
+    ''' 数据类型 '''
+    data_type = ['visit', 'page', 'action', 'action_tag', 'custom_event', 'ads_track_activation', 'ads_track_click', 'pvar', 'evar', 'vstr']
     ''' 下载日期 '''
     dw_time = threeDayAgo.strftime("%Y%m%d")
     f = GIO(info[0], info[1], info[2], info[3])
     code = f.authToken()
     for x in range(len(data_type)):
+    #    dwl = f.get_downlinkes(code, data_type[x])
+    #    for y in dwl:
+    #        f.get_data(y, data_type[x], dw_time)
         dwl = f.get_downlinkes(code, data_type[x])
-        for y in dwl:
-            f.get_data(y, data_type[x], dw_time)
+        if dwl[0] == 'FINISHED':
+            for y in dwl[1]:
+                f.get_data(y, data_type[x], dw_time)
+        else:
+            print (data_type[x] + '链接失效')
